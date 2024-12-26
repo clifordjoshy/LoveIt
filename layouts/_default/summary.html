@@ -1,21 +1,6 @@
 {{- $params := .Params | merge .Site.Params.page -}}
 
 <article class="single summary" itemscope itemtype="http://schema.org/Article">
-    {{- /* Featured image */ -}}
-    {{- $image := $params.featuredimagepreview | default $params.featuredimage -}}
-    {{- with .Resources.GetMatch "featured-image" -}}
-        {{- $image = .RelPermalink -}}
-    {{- end -}}
-    {{- with .Resources.GetMatch "featured-image-preview" -}}
-        {{- $image = .RelPermalink -}}
-    {{- end -}}
-    {{- with $image -}}
-        <div class="featured-image-preview">
-            <a href="{{ $.RelPermalink }}">
-                {{- dict "Src" . "Title" $.Description "Resources" $.Resources | partial "plugin/img.html" -}}
-            </a>
-        </div>
-    {{- end -}}
 
     {{- /* Title */ -}}
     <h1 class="single-title" itemprop="name headline">
@@ -24,15 +9,9 @@
 
     {{- /* Meta */ -}}
     <div class="post-meta">
-        {{- $author := $params.author | default .Site.Author.name | default (T "author") -}}
-        {{- $authorLink := $params.authorlink | default .Site.Author.link | default .Site.Home.RelPermalink -}}
-        <span class="post-author">
-            {{- $options := dict "Class" "author" "Destination" $authorLink "Title" "Author" "Rel" "author" "Icon" (dict "Class" "fas fa-user-circle fa-fw") "Content" $author -}}
-            {{- partial "plugin/a.html" $options -}}
-        </span>
 
         {{- with .Site.Params.dateFormat | default "2006-01-02" | .PublishDate.Format -}}
-            &nbsp;<span class="post-publish">
+            <span class="post-publish">
                 {{- printf `<time datetime="%v">%v</time>` . . | dict "Date" | T "publishedOnDate" | safeHTML -}}
             </span>
         {{- end -}}

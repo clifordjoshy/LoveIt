@@ -1,12 +1,18 @@
 {{- define "title" }}
-    {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" }} - {{ .Site.Title -}}
+    {{ .Params.Title | default (T .Section) | default .Section | title | dict "Some" | T "allSome"  }} - {{ .Site.Title -}}
 {{- end -}}
 
 {{- define "content" -}}
+    {{- $contentName := .Params.Title | default (T .Section) | default .Section | title -}}
     <div class="page archive">
         {{- /* Title */ -}}
         <h2 class="single-title animate__animated animate__pulse animate__faster">
-            {{- .Params.Title | default (T .Section) | default .Section | dict "Some" | T "allSome" -}}
+            {{- if eq $contentName "Posts" -}}
+                <i class="fas fa-pen-nib fa-fw" aria-hidden="true"></i>&nbsp;
+            {{- else if eq $contentName "Projects" -}}
+                <i class="fas fa-code fa-fw" aria-hidden="true"></i>&nbsp;
+            {{- end -}}
+            {{ $contentName }}
         </h2>
 
         {{- /* Paginate */ -}}
